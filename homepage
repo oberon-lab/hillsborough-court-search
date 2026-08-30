@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>
+        Hillsborough County Court Case Search
+    </title>
+
+</head>
+
+
+<body>
+
+    <h1>
+        Hillsborough County Court Case Search
+    </h1>
+
+
+    <form action="/search" method="GET">
+
+        <input
+            type="text"
+            name="q"
+            placeholder="Search case number or party name"
+        >
+
+        <button type="submit">
+
+            Search
+
+        </button>
+
+    </form>
+
+
+</body>
+
+</html>
