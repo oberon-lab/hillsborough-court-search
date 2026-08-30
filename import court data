@@ -1,0 +1,86 @@
+import csv
+import sqlite3
+
+
+DATABASE = "court_cases.db"
+
+
+connection = sqlite3.connect(DATABASE)
+
+cursor = connection.cursor()
+
+
+with open(
+
+    "court_data.csv",
+
+    newline="",
+
+    encoding="utf-8"
+
+) as csvfile:
+
+
+    reader = csv.DictReader(csvfile)
+
+
+    for row in reader:
+
+
+        cursor.execute("""
+
+            INSERT OR IGNORE INTO cases (
+
+                case_number,
+
+                case_type,
+
+                filing_date,
+
+                court_type,
+
+                plaintiff,
+
+                defendant,
+
+                status,
+
+                source_url
+
+            )
+
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+
+        """, (
+
+
+            row.get("case_number"),
+
+            row.get("case_type"),
+
+            row.get("filing_date"),
+
+            row.get("court_type"),
+
+            row.get("plaintiff"),
+
+            row.get("defendant"),
+
+            row.get("status"),
+
+            row.get("source_url")
+
+
+        ))
+
+
+connection.commit()
+
+connection.close()
+
+
+print(
+
+    "Court data imported successfully."
+
+)
