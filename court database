@@ -1,0 +1,58 @@
+import sqlite3
+
+DATABASE = "court_cases.db"
+
+
+def get_connection():
+    connection = sqlite3.connect(DATABASE)
+    connection.row_factory = sqlite3.Row
+    return connection
+
+
+def create_database():
+    connection = get_connection()
+
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS cases (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+            case_number TEXT UNIQUE,
+            case_type TEXT,
+
+            filing_date TEXT,
+
+            court_type TEXT,
+
+            plaintiff TEXT,
+            defendant TEXT,
+
+            status TEXT,
+
+            source_url TEXT
+        )
+    """)
+
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_case_number
+        ON cases(case_number)
+    """)
+
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_plaintiff
+        ON cases(plaintiff)
+    """)
+
+    cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_defendant
+        ON cases(defendant)
+    """)
+
+    connection.commit()
+    connection.close()
+
+
+if __name__ == "__main__":
+    create_database()
+    print("Database created successfully.")
