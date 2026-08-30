@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>
+        Search Results
+    </title>
+
+</head>
+
+
+<body>
+
+
+<h1>
+    Search Results
+</h1>
+
+
+<p>
+
+    Search:
+
+    <strong>
+
+        {{ query }}
+
+    </strong>
+
+</p>
+
+
+<a href="/">
+
+    New Search
+
+</a>
+
+
+<hr>
+
+
+{% if results %}
+
+
+    <table border="1">
+
+        <tr>
+
+            <th>
+                Case Number
+            </th>
+
+            <th>
+                Case Type
+            </th>
+
+            <th>
+                Filing Date
+            </th>
+
+            <th>
+                Plaintiff
+            </th>
+
+            <th>
+                Defendant
+            </th>
+
+            <th>
+                Status
+            </th>
+
+        </tr>
+
+
+        {% for case in results %}
+
+
+        <tr>
+
+            <td>
+
+                {{ case["case_number"] }}
+
+            </td>
+
+
+            <td>
+
+                {{ case["case_type"] }}
+
+            </td>
+
+
+            <td>
+
+                {{ case["filing_date"] }}
+
+            </td>
+
+
+            <td>
+
+                {{ case["plaintiff"] }}
+
+            </td>
+
+
+            <td>
+
+                {{ case["defendant"] }}
+
+            </td>
+
+
+            <td>
+
+                {{ case["status"] }}
+
+            </td>
+
+
+        </tr>
+
+
+        {% endfor %}
+
+
+    </table>
+
+
+{% else %}
+
+
+    <p>
+
+        No results found.
+
+    </p>
+
+
+{% endif %}
+
+
+</body>
+
+</html>
