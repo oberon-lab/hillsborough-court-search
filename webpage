@@ -1,0 +1,74 @@
+from flask import Flask, render_template, request
+import sqlite3
+
+app = Flask(__name__)
+
+DATABASE = "court_cases.db"
+
+
+def get_db():
+
+    connection = sqlite3.connect(DATABASE)
+
+    connection.row_factory = sqlite3.Row
+
+    return connection
+
+
+@app.route("/")
+def home():
+
+    return render_template("index.html")
+
+
+@app.route("/search")
+def search():
+
+    query = request.args.get("q", "").strip()
+
+    results = []
+
+    if query:
+
+        connection = get_db()
+
+        cursor = connection.cursor()
+
+        search_term = f"%{query}%"
+
+        cursor.execute("""
+            SELECT *
+            FROM cases
+
+            WHERE
+                case_number LIKE ?
+                OR plaintiff LIKE ?
+                OR defendant LIKE ?
+                OR case_type LIKE ?
+
+            ORDER BY filing_date DESC
+
+            LIMIT 100
+        """, (
+            search_term,
+            search_term,
+            search_term,
+            search_term
+        ))
+
+        results = cursor.fetchall()
+
+        connection.close()
+
+    return render_template(
+        "results.html",
+        results=results,
+        query=query
+    )
+
+
+if __name__ == "__main__":
+
+    app.run(
+        debug=True
+    )
